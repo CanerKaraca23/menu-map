@@ -1,0 +1,92 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PLUGIN_SDK_REF: 5da18b6f1956bb20bdfa39dcb07c44863ce26c81
+  PLUGIN_SDK_DIR: ${{ github.workspace }}\_deps\plugin-sdk
+  RWD3D9_DIR: ${{ github.workspace }}\_deps\plugin-sdk\shared\rwd3d9
+  GTA_III_DIR: ${{ github.workspace }}\_ci\gta3
+  GTA_VC_DIR: ${{ github.workspace }}\_ci\gtavc
+
+jobs:
+  build:
+    name: Build ASI plugins
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout plugin-sdk
+        uses: actions/checkout@v4
+        with:
+          repository: DK22Pac/plugin-sdk
+          ref: ${{ env.PLUGIN_SDK_REF }}
+          path: _deps/plugin-sdk
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Prepare CI game folders
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "$env:GTA_III_DIR\scripts", "$env:GTA_VC_DIR\scripts"
+
+      - name: Generate plugin-sdk solution
+        shell: pwsh
+        run: |
+          & "$env:PLUGIN_SDK_DIR\tools\premake\premake5.exe" vs2022 "--file=$env:PLUGIN_SDK_DIR\tools\premake\premake5.lua"
+
+      - name: Build plugin-sdk libraries
+        shell: pwsh
+        run: |
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.sln" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_III
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.sln" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_VC
+
+          $expected = @(
+            "$env:PLUGIN_SDK_DIR\output\lib\Plugin_III.lib",
+            "$env:PLUGIN_SDK_DIR\output\lib\Plugin_VC.lib"
+          )
+
+          foreach ($file in $expected) {
+            if (!(Test-Path $file)) {
+              throw "Missing plugin-sdk build output: $file"
+            }
+          }
+
+      - name: Generate project solution
+        shell: pwsh
+        run: |
+          & ".\premake5.exe" vs2022
+
+      - name: Build MenuMap
+        shell: pwsh
+        run: |
+          msbuild ".\project_files\menu-map.sln" /m /v:minimal /p:Configuration=ReleaseIII /p:Platform=Win32
+          msbuild ".\project_files\menu-map.sln" /m /v:minimal /p:Configuration=ReleaseVC /p:Platform=Win32
+
+          $expected = @(
+            "output\asi\MenuMapIII.asi",
+            "output\asi\MenuMapVC.asi"
+          )
+
+          foreach ($file in $expected) {
+            if (!(Test-Path $file)) {
+              throw "Missing MenuMap build output: $file"
+            }
+          }
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: menu-map-asi
+          path: |
+            output/asi/*.asi
+            resources/*.ini
