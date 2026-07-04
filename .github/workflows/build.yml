@@ -2,14 +2,9 @@ name: Build
 
 on:
   push:
-  pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 env:
-  PLUGIN_SDK_REF: 5da18b6f1956bb20bdfa39dcb07c44863ce26c81
   PLUGIN_SDK_DIR: ${{ github.workspace }}\_deps\plugin-sdk
   RWD3D9_DIR: ${{ github.workspace }}\_deps\plugin-sdk\shared\rwd3d9
   GTA_III_DIR: ${{ github.workspace }}\_ci\gta3
@@ -17,22 +12,21 @@ env:
 
 jobs:
   build:
-    name: Build ASI plugins
-    runs-on: windows-2022
+    name: Build
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout plugin-sdk
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: DK22Pac/plugin-sdk
-          ref: ${{ env.PLUGIN_SDK_REF }}
           path: _deps/plugin-sdk
 
       - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
 
       - name: Prepare CI game folders
         shell: pwsh
@@ -84,7 +78,7 @@ jobs:
           }
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: menu-map-asi
           path: |
