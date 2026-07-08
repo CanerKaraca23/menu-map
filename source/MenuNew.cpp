@@ -1427,7 +1427,7 @@ void CMenuNew::DrawLegend() {
         if (waypStr && waypStr[0] != '\0') {
             CFont::PrintString(textX, textY, waypStr);
         } else {
-            CFont::PrintString(textX, textY, EnsureDoubleNullTerminated("Waypoint"));
+            CFont::PrintString(textX, textY, (const wchar_t*)L"Waypoint");
         }
     }
 #elif defined(GTA3) && defined(LCSFICATION)
