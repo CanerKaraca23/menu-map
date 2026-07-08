@@ -27,6 +27,10 @@ CRGBA MapLegendBlipColor[MAX_LEGEND_ENTRIES] = {};
 
 #include "SkyUIAPI.h"
 
+extern "C" {
+    extern void (*MenuMap_DrawCallback)();
+}
+
 std::unique_ptr<CMenuNew> MenuNew;
 
 #ifdef WITH_VCS_MAP_OPTIONS
@@ -451,6 +455,9 @@ void CMenuNew::DrawMap() {
 #ifdef WITH_VCS_MAP_OPTIONS
     DrawDiscoveredExtrasBlips();
 #endif
+
+    if (MenuMap_DrawCallback)
+        MenuMap_DrawCallback();
 
     DrawBlips();
     DrawCrosshair(m_vCrosshair.x, m_vCrosshair.y);
@@ -1563,3 +1570,22 @@ void CMenuNew::DrawDiscoveredExtrasBlips() {
 }
 #endif
 
+
+extern "C" {
+    void (*MenuMap_DrawCallback)() = nullptr;
+
+    __declspec(dllexport) void MenuMap_RegisterDrawCallback(void (*cb)()) {
+        MenuMap_DrawCallback = cb;
+    }
+
+    __declspec(dllexport) void MenuMap_GetScreenCoords(float worldX, float worldY, float* screenX, float* screenY) {
+        if (!MenuNew || !screenX || !screenY)
+            return;
+
+        CVector2D in = { worldX, worldY };
+        CVector2D out = MenuNew->WorldToMap({ in.x, in.y, 0.0f });
+
+        *screenX = out.x + MenuNew->GetMenuOffsetX();
+        *screenY = out.y;
+    }
+}
