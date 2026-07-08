@@ -1400,10 +1400,6 @@ void CMenuNew::DrawLegend() {
         x = SCREEN_WIDTH / 2;
         x -= ScaleX(shift);
 
-        CFont::SetCentreOff();
-        CFont::SetRightJustifyOff();
-        CFont::SetBackGroundOnlyTextOff();
-
         if (items[i] == RADAR_WAYPOINT) {
             float blipX = x;
             float blipY = y;
@@ -1416,11 +1412,11 @@ void CMenuNew::DrawLegend() {
             CFont::SetBackGroundOnlyTextOff();
             CFont::SetCentreOff();
             CFont::SetRightJustifyOff();
-            CFont::SetDropShadowPosition(2);
+            CFont::SetDropShadowPosition(1);
             CFont::SetDropColor(CRGBA(0, 0, 0, 255));
-            CFont::SetFontStyle(2);
-            CFont::SetColor(CRGBA(181, 140, 150, 255));
-            CFont::SetScale(ScaleX(0.55f), ScaleY(1.1f));
+            CFont::SetFontStyle(1);
+            CFont::SetColor(CRGBA(255, 255, 255, 255));
+            CFont::SetScale(ScaleX(0.48f), ScaleY(0.85f));
             const wchar_t* waypStr = TheText.Get("FE_WAYP");
             if (waypStr && waypStr[0] != '\0') {
                 CFont::PrintString(textX, textY, waypStr);
@@ -1433,11 +1429,7 @@ void CMenuNew::DrawLegend() {
 
         if (i + 1 < totalItems && items[i + 1] != RADAR_SPRITE_NONE) {
             x = SCREEN_WIDTH / 2;
-            x += ScaleX(shift);
-
-            CFont::SetCentreOff();
-            CFont::SetRightJustifyOff();
-            CFont::SetBackGroundOnlyTextOff();
+            x += ScaleX(shift / 8);
 
             if (items[i + 1] == RADAR_WAYPOINT) {
                 float blipX = x;
@@ -1451,11 +1443,11 @@ void CMenuNew::DrawLegend() {
                 CFont::SetBackGroundOnlyTextOff();
                 CFont::SetCentreOff();
                 CFont::SetRightJustifyOff();
-                CFont::SetDropShadowPosition(2);
+                CFont::SetDropShadowPosition(1);
                 CFont::SetDropColor(CRGBA(0, 0, 0, 255));
-                CFont::SetFontStyle(2);
-                CFont::SetColor(CRGBA(181, 140, 150, 255));
-                CFont::SetScale(ScaleX(0.55f), ScaleY(1.1f));
+                CFont::SetFontStyle(1);
+                CFont::SetColor(CRGBA(255, 255, 255, 255));
+                CFont::SetScale(ScaleX(0.48f), ScaleY(0.85f));
                 const wchar_t* waypStr = TheText.Get("FE_WAYP");
                 if (waypStr && waypStr[0] != '\0') {
                     CFont::PrintString(textX, textY, waypStr);
