@@ -1306,7 +1306,8 @@ void CMenuNew::DrawLegend() {
 #ifdef GTA3
     float boxHeight = (MapLegendCounter - (1 * MapLegendCounter / 2));
 #else
-    float boxHeight = (CRadar::MapLegendCounter - (1 * CRadar::MapLegendCounter / 2));
+    int localLegendCounter = CRadar::MapLegendCounter + (targetBlipIndex ? 1 : 0);
+    float boxHeight = (localLegendCounter - (1 * localLegendCounter / 2));
 #endif
 
 #ifdef WITH_VCS_MAP_OPTIONS
@@ -1389,11 +1390,40 @@ void CMenuNew::DrawLegend() {
 
         if (CRadar::MapLegendList[i + 1] != RADAR_SPRITE_NONE && i < 74) {
             x = SCREEN_WIDTH / 2;
-            x += ScaleX(shift / 8);
+            x += ScaleX(shift);
             CRadar::DrawLegend(x, y, CRadar::MapLegendList[i + 1]);
         }
 
         y += ScaleY(spacing);
+    }
+
+    if (targetBlipIndex) {
+        x = SCREEN_WIDTH / 2;
+        if ((CRadar::MapLegendCounter % 2) == 1) {
+            x += ScaleX(shift);
+            y -= ScaleY(spacing);
+        } else {
+            x -= ScaleX(shift);
+        }
+
+        float blipX = x;
+        float blipY = y;
+        DrawWayPoint(blipX, blipY, ScaleX(LEGEND_BLIP_SCALE_X), ScaleY(LEGEND_BLIP_SCALE_Y), CRGBA(255, 0, 0, GetAlpha(255)));
+
+        float textX = blipX + ScaleX(LEGEND_BLIP_SCALE_X * 0.8f);
+        float textY = blipY - ScaleY(LEGEND_BLIP_SCALE_Y * 0.5f);
+
+        CFont::SetPropOn();
+        CFont::SetWrapx(SCREEN_WIDTH * 2);
+        CFont::SetBackGroundOnlyTextOff();
+        CFont::SetCentreOff();
+        CFont::SetRightJustifyOff();
+        CFont::SetDropShadowPosition(2);
+        CFont::SetDropColor(CRGBA(0, 0, 0, 255));
+        CFont::SetFontStyle(2);
+        CFont::SetColor(CRGBA(HUD_COLOUR_LCS_MENU, 255));
+        CFont::SetScale(ScaleX(0.55f), ScaleY(1.1f));
+        CFont::PrintString(textX, textY, TheText.Get("FE_WAYP"));
     }
 #elif defined(GTA3) && defined(LCSFICATION)
     float x = 0.0f;
