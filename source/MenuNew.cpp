@@ -1423,7 +1423,12 @@ void CMenuNew::DrawLegend() {
         CFont::SetFontStyle(2);
         CFont::SetColor(CRGBA(HUD_COLOUR_LCS_MENU, 255));
         CFont::SetScale(ScaleX(0.55f), ScaleY(1.1f));
-        CFont::PrintString(textX, textY, TheText.Get("FE_WAYP"));
+        const wchar_t* waypStr = TheText.Get("FE_WAYP");
+        if (waypStr && waypStr[0] != '\0') {
+            CFont::PrintString(textX, textY, waypStr);
+        } else {
+            CFont::PrintString(textX, textY, EnsureDoubleNullTerminated("Waypoint"));
+        }
     }
 #elif defined(GTA3) && defined(LCSFICATION)
     float x = 0.0f;
