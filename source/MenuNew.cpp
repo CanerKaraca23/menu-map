@@ -58,7 +58,7 @@ CMenuNew::~CMenuNew() {
 
 uint32_t CMenuNew::GetAlpha(uint32_t a) {
     if (settings.skyUI)
-        return min(menuManager->FadeIn(a), SkyUI::GetAlpha(a));
+        return std::min(menuManager->FadeIn(a), SkyUI::GetAlpha(a));
 
     return menuManager->FadeIn(a);
 }
@@ -93,13 +93,13 @@ void CMenuNew::DrawMap() {
 
 #ifdef GTA3
     if (settings.skyUI) {
-        GetD3DDevice<IDirect3DDevice8>()->GetViewport(&previousViewport);
+        static_cast<IDirect3DDevice8*>(GetD3DDevice())->GetViewport(&previousViewport);
 
         newViewport.X = ScaleXKeepCentered(32.0f) + GetMenuOffsetX();
         newViewport.Y = ScaleY(42.0f);
         newViewport.Width = ScaleXKeepCentered(DEFAULT_SCREEN_WIDTH - 32.0f) - newViewport.X + GetMenuOffsetX();
         newViewport.Height = ScaleY(DEFAULT_SCREEN_HEIGHT - 102.0f) - newViewport.Y;
-        GetD3DDevice<IDirect3DDevice8>()->SetViewport(&newViewport);
+        static_cast<IDirect3DDevice8*>(GetD3DDevice())->SetViewport(&newViewport);
     }
 #endif
 
@@ -213,7 +213,7 @@ void CMenuNew::DrawMap() {
 
 #ifdef GTA3
     if (settings.skyUI)
-        GetD3DDevice<IDirect3DDevice8>()->SetViewport(&previousViewport);
+        static_cast<IDirect3DDevice8*>(GetD3DDevice())->SetViewport(&previousViewport);
 #endif
 }
 
@@ -901,7 +901,7 @@ void CMenuNew::DrawLegendEntry(float x, float y, short id, CRGBA* col) {
     if (id == RADAR_WAYPOINT) {
         DrawWayPoint(x, y + ScaleY(4.0f), ScaleX(LEGEND_BLIP_SCALE), ScaleY(LEGEND_BLIP_SCALE), CRGBA(255, 0, 0, GetAlpha(255)));
     }
-    else if (id < RADAR_DESTINATION) {
+    else if (id <= RADAR_DESTINATION) {
         static int level = 0;
         static int levelTime = 0;
         CRGBA white = { 255, 255, 255, 255 };
