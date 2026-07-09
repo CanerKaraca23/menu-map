@@ -30,10 +30,12 @@ project "menu-map"
 	
 	filter { "configurations:*III" }
 		links { "d3d8", "d3dx8" }
-		defines { "GTA3", "PLUGIN_SGV_10EN" }
+		defines { "GTA3", "PLUGIN_SGV_10EN", "RW" }
 		includedirs {
 			"$(PLUGIN_SDK_DIR)/plugin_III/",
 			"$(PLUGIN_SDK_DIR)/plugin_III/game_III/",
+			"$(PLUGIN_SDK_DIR)/plugin_III/game_III/rw/",
+			"$(PLUGIN_SDK_DIR)/plugin_III/game_III/enums/",
 		}
 		targetname "MenuMapIII"
 		debugdir "$(GTA_III_DIR)"
@@ -42,10 +44,12 @@ project "menu-map"
 		
 	filter { "configurations:*VC" }	
 		links { "d3d8", "d3dx8" }
-		defines { "GTAVC", "PLUGIN_SGV_10EN" }	
+		defines { "GTAVC", "PLUGIN_SGV_10EN", "RW" }	
 		includedirs {
 			"$(PLUGIN_SDK_DIR)/plugin_vc/",
 			"$(PLUGIN_SDK_DIR)/plugin_vc/game_vc/",
+			"$(PLUGIN_SDK_DIR)/plugin_vc/game_vc/rw/",
+			"$(PLUGIN_SDK_DIR)/plugin_vc/game_vc/enums/",
 			"$(RWD3D9_DIR)/source"
 		}
 		targetname "MenuMapVC"
