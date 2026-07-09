@@ -58,7 +58,7 @@ CMenuNew::~CMenuNew() {
 
 uint32_t CMenuNew::GetAlpha(uint32_t a) {
     if (settings.skyUI)
-        return std::min(menuManager->FadeIn(a), SkyUI::GetAlpha(a));
+        return std::min<uint32_t>(menuManager->FadeIn(a), SkyUI::GetAlpha(a));
 
     return menuManager->FadeIn(a);
 }
