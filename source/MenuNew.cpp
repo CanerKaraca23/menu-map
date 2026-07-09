@@ -1401,28 +1401,8 @@ void CMenuNew::DrawLegend() {
         x -= ScaleX(shift);
 
         if (items[i] == RADAR_WAYPOINT) {
-            float blipX = x;
-            float blipY = y;
-            DrawWayPoint(blipX, blipY, ScaleX(LEGEND_BLIP_SCALE_X), ScaleY(LEGEND_BLIP_SCALE_Y), CRGBA(255, 0, 0, GetAlpha(255)));
-
-            float textX = blipX + ScaleX(LEGEND_BLIP_SCALE_X * 0.8f);
-            float textY = blipY - ScaleY(LEGEND_BLIP_SCALE_Y * 0.5f);
-            CFont::SetPropOn();
-            CFont::SetWrapx(SCREEN_WIDTH * 2);
-            CFont::SetBackGroundOnlyTextOff();
-            CFont::SetCentreOff();
-            CFont::SetRightJustifyOff();
-            CFont::SetDropShadowPosition(1);
-            CFont::SetDropColor(CRGBA(0, 0, 0, 255));
-            CFont::SetFontStyle(1);
-            CFont::SetColor(CRGBA(255, 255, 255, 255));
-            CFont::SetScale(ScaleX(0.48f), ScaleY(0.85f));
-            const wchar_t* waypStr = TheText.Get("FE_WAYP");
-            if (waypStr && waypStr[0] != '\0') {
-                CFont::PrintString(textX, textY, waypStr);
-            } else {
-                CFont::PrintString(textX, textY, (const wchar_t*)L"Waypoint");
-            }
+            CRGBA c = CRGBA(172, 203, 241, GetAlpha(255));
+            DrawLegendEntry(x + GetMenuOffsetX(), y, RADAR_WAYPOINT, &c);
         } else {
             CRadar::DrawLegend(x, y, items[i]);
         }
@@ -1432,28 +1412,8 @@ void CMenuNew::DrawLegend() {
             x += ScaleX(shift / 8);
 
             if (items[i + 1] == RADAR_WAYPOINT) {
-                float blipX = x;
-                float blipY = y;
-                DrawWayPoint(blipX, blipY, ScaleX(LEGEND_BLIP_SCALE_X), ScaleY(LEGEND_BLIP_SCALE_Y), CRGBA(255, 0, 0, GetAlpha(255)));
-
-                float textX = blipX + ScaleX(LEGEND_BLIP_SCALE_X * 0.8f);
-                float textY = blipY - ScaleY(LEGEND_BLIP_SCALE_Y * 0.5f);
-                CFont::SetPropOn();
-                CFont::SetWrapx(SCREEN_WIDTH * 2);
-                CFont::SetBackGroundOnlyTextOff();
-                CFont::SetCentreOff();
-                CFont::SetRightJustifyOff();
-                CFont::SetDropShadowPosition(1);
-                CFont::SetDropColor(CRGBA(0, 0, 0, 255));
-                CFont::SetFontStyle(1);
-                CFont::SetColor(CRGBA(255, 255, 255, 255));
-                CFont::SetScale(ScaleX(0.48f), ScaleY(0.85f));
-                const wchar_t* waypStr = TheText.Get("FE_WAYP");
-                if (waypStr && waypStr[0] != '\0') {
-                    CFont::PrintString(textX, textY, waypStr);
-                } else {
-                    CFont::PrintString(textX, textY, (const wchar_t*)L"Waypoint");
-                }
+                CRGBA c = CRGBA(172, 203, 241, GetAlpha(255));
+                DrawLegendEntry(x + GetMenuOffsetX(), y, RADAR_WAYPOINT, &c);
             } else {
                 CRadar::DrawLegend(x, y, items[i + 1]);
             }
@@ -1555,10 +1515,11 @@ void CMenuNew::DrawLegendEntry(float x, float y, short id, CRGBA* col) {
     if (id < 0)
         id = std::abs(id) + RADAR_SHIFTED_NEGATIVE;
 
-    CRGBA c = CRGBA(HUD_COLOUR_LCS_MENU, GetAlpha(255));
-
     x = blipX + ScaleX(LEGEND_BLIP_SCALE_X * 0.8f);
     y = blipY - ScaleY(LEGEND_BLIP_SCALE_Y * 0.5f);
+
+    CRGBA c = col ? *col : CRGBA(HUD_COLOUR_LCS_MENU, GetAlpha(255));
+
     if (settings.readStringsFromThisFile && id >= 0 && id < (int32_t)settings.gxt.size()) {
         DrawTextForLegendBox(x, y, settings.gxt.at(id).c_str(), c);  
     }
