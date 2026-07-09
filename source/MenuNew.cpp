@@ -27,6 +27,10 @@ CRGBA MapLegendBlipColor[32] = {};
 
 using namespace plugin;
 
+extern "C" {
+    extern void (*MenuMap_DrawCallback)();
+}
+
 std::unique_ptr<CMenuNew> MenuNew;
 CSprite2d** RadarSpritesArray = pRadarSprites;
 
@@ -191,6 +195,9 @@ void CMenuNew::DrawMap() {
 
 #endif
 #endif
+
+    if (MenuMap_DrawCallback)
+        MenuMap_DrawCallback();
 
     DrawBlips();
     DrawCrosshair(m_vCrosshair.x, m_vCrosshair.y);
@@ -958,3 +965,22 @@ void CMenuNew::AddBlipToToLegendList(short id, CRGBA const& col) {
 }
 
 #endif
+
+extern "C" {
+    void (*MenuMap_DrawCallback)() = nullptr;
+
+    __declspec(dllexport) void MenuMap_RegisterDrawCallback(void (*cb)()) {
+        MenuMap_DrawCallback = cb;
+    }
+
+    __declspec(dllexport) void MenuMap_GetScreenCoords(float worldX, float worldY, float* screenX, float* screenY) {
+        if (!MenuNew || !screenX || !screenY)
+            return;
+
+        CVector2D in = { worldX, worldY };
+        CVector2D out = MenuNew->WorldToMap({ in.x, in.y, 0.0f });
+
+        *screenX = out.x + MenuNew->GetMenuOffsetX();
+        *screenY = out.y;
+    }
+}
