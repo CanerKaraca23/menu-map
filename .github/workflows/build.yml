@@ -41,8 +41,8 @@ jobs:
       - name: Build plugin-sdk libraries
         shell: pwsh
         run: |
-          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_III
-          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_VC
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform=Win32 /t:Plugin_III
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform=Win32 /t:Plugin_VC
 
           $expected = @(
             "$env:PLUGIN_SDK_DIR\output\lib\Plugin_III.lib",
