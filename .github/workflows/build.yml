@@ -36,13 +36,13 @@ jobs:
       - name: Generate plugin-sdk solution
         shell: pwsh
         run: |
-          & "$env:PLUGIN_SDK_DIR\tools\premake\premake5.exe" vs2026 "--file=$env:PLUGIN_SDK_DIR\tools\premake\premake5.lua"
+          & "$env:PLUGIN_SDK_DIR\tools\premake\premake5.exe" vs2022 "--file=$env:PLUGIN_SDK_DIR\tools\premake\premake5.lua"
 
       - name: Build plugin-sdk libraries
         shell: pwsh
         run: |
-          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_III
-          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_VC
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.sln" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_III
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.sln" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_VC
 
           $expected = @(
             "$env:PLUGIN_SDK_DIR\output\lib\Plugin_III.lib",
