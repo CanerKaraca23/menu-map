@@ -84,7 +84,6 @@ project "menu-map"
         defines { "NDEBUG" }
         optimize "Speed"
         floatingpoint "Fast"
-        linktimeoptimization "On"
         vectorextensions "AVX2"
         largeaddressaware "On"
         rtti "Off"
