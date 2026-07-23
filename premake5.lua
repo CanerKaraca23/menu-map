@@ -6,7 +6,6 @@ workspace "menu-map"
 
     language "C++"
     cppdialect "C++latest"
-    multiprocessorcompile "On"
     warnings "Extra"
    
 project "menu-map"
@@ -16,7 +15,7 @@ project "menu-map"
     targetextension ".asi"
     characterset "MBCS"
     linkoptions "/SAFESEH:NO"
-    buildoptions { "/permissive" }
+    buildoptions { "/permissive", "/MP" }
     defines { "_CRT_SECURE_NO_WARNINGS", "_CRT_NON_CONFORMING_SWPRINTFS", "_USE_MATH_DEFINES", "RW" }
     disablewarnings { "4244", "4800", "4305", "4073", "4838", "4996", "4221", "4430", "26812", "26495", "6031" }
 
