@@ -41,8 +41,8 @@ jobs:
       - name: Build plugin-sdk libraries
         shell: pwsh
         run: |
-          msbuild "$env:PLUGIN_SDK_DIR\plugin.sln" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_III
-          msbuild "$env:PLUGIN_SDK_DIR\plugin.sln" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_VC
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_III
+          msbuild "$env:PLUGIN_SDK_DIR\plugin.slnx" /m /v:minimal /p:Configuration=Release /p:Platform="Mixed Platforms" /t:Plugin_VC
 
           $expected = @(
             "$env:PLUGIN_SDK_DIR\output\lib\Plugin_III.lib",
@@ -58,13 +58,13 @@ jobs:
       - name: Generate project solution
         shell: pwsh
         run: |
-          & ".\premake5.exe" vs2022
+          & ".\premake5.exe" vs2026
 
       - name: Build MenuMap
         shell: pwsh
         run: |
-          msbuild ".\project_files\menu-map.sln" /m /v:minimal /p:Configuration=ReleaseIII /p:Platform=Win32
-          msbuild ".\project_files\menu-map.sln" /m /v:minimal /p:Configuration=ReleaseVC /p:Platform=Win32
+          msbuild ".\project_files\menu-map.slnx" /m /v:minimal /p:Configuration=ReleaseIII /p:Platform=Win32
+          msbuild ".\project_files\menu-map.slnx" /m /v:minimal /p:Configuration=ReleaseVC /p:Platform=Win32
 
           $expected = @(
             "output\asi\MenuMapIII.asi",
