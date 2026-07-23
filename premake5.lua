@@ -15,7 +15,7 @@ project "menu-map"
     targetextension ".asi"
     characterset "MBCS"
     linkoptions "/SAFESEH:NO"
-    buildoptions { "/permissive", "/MP" }
+    buildoptions { "/permissive", "/MP", "/Zc:threadSafeInit-", "/Zc:strictStrings" }
     defines { "_CRT_SECURE_NO_WARNINGS", "_CRT_NON_CONFORMING_SWPRINTFS", "_USE_MATH_DEFINES", "RW" }
     disablewarnings { "4244", "4800", "4305", "4073", "4838", "4996", "4221", "4430", "26812", "26495", "6031" }
 
@@ -84,7 +84,8 @@ project "menu-map"
     filter "configurations:Release*"
         defines { "NDEBUG" }
         optimize "Speed"
-        floatingpoint "Fast"
+        stringpooling "On"
+        linktimeoptimization "On"
         vectorextensions "AVX2"
         largeaddressaware "On"
         rtti "Off"
@@ -92,7 +93,7 @@ project "menu-map"
         symbols "Off"
         omitframepointer "On"
         staticruntime "On"
-        buildoptions { "/Gw", "/Qpar", "/Zc:preprocessor" }
+        buildoptions { "/Gw" }
         
     filter "configurations:ReleaseSA"
         links { "plugin" }
