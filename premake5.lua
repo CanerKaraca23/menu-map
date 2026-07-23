@@ -79,6 +79,7 @@ project "menu-map"
     filter "configurations:Debug*"      
         defines { "DEBUG" }
         symbols "On"
+        staticruntime "On"
 
     filter "configurations:Release*"
         defines { "NDEBUG" }
@@ -90,6 +91,7 @@ project "menu-map"
         exceptionhandling "On"
         symbols "Off"
         omitframepointer "On"
+        staticruntime "On"
         buildoptions { "/Gw", "/Qpar", "/Zc:preprocessor" }
         
     filter "configurations:ReleaseSA"
