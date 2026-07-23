@@ -36,7 +36,7 @@ jobs:
       - name: Generate plugin-sdk solution
         shell: pwsh
         run: |
-          & "$env:PLUGIN_SDK_DIR\tools\premake\premake5.exe" vs2022 "--file=$env:PLUGIN_SDK_DIR\tools\premake\premake5.lua"
+          & ".\premake5.exe" vs2026 "--file=$env:PLUGIN_SDK_DIR\tools\premake\premake5.lua"
 
       - name: Build plugin-sdk libraries
         shell: pwsh
