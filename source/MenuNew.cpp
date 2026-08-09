@@ -621,7 +621,7 @@ void CMenuNew::DrawBlips() {
         CPlayerPed* playa = FindPlayerPed();
         CVector2D pos = WorldToMap(trace.m_vecPos);
 
-        CRGBA col = CRadar::GetRadarTraceColour(trace.m_nColour, true
+        CRGBA col = CRadar::GetRadarTraceColour(trace.m_nColour, trace.m_bBright
 #ifdef GTASA
             , trace.m_bFriendly
 #endif
